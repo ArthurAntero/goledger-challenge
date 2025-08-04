@@ -48,6 +48,7 @@ type Car struct {
 	Model  string `json:"model"`
 	Colour string `json:"colour"`
 	Owner  string `json:"owner"`
+	Year   int    `json:"year"`
 }
 
 /*
@@ -120,11 +121,16 @@ func (s *SmartContract) initLedger(APIstub shim.ChaincodeStubInterface) sc.Respo
 
 func (s *SmartContract) createCar(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
 
-	if len(args) != 5 {
-		return shim.Error("Incorrect number of arguments. Expecting 5")
+	if len(args) != 6 {
+		return shim.Error("Incorrect number of arguments. Expecting 6")
 	}
 
-	var car = Car{Make: args[1], Model: args[2], Colour: args[3], Owner: args[4]}
+	yearAsInt, err := strconv.Atoi(args[5])
+	if err != nil {
+		return shim.Error("Invalid year format, expecting a number. Error: " + err.Error())
+	}
+
+	var car = Car{Make: args[1], Model: args[2], Colour: args[3], Owner: args[4], Year: yearAsInt}
 
 	carAsBytes, _ := json.Marshal(car)
 	APIstub.PutState(args[0], carAsBytes)

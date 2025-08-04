@@ -1,6 +1,6 @@
 module github.com/chaincode/fabcar/go
 
-go 1.22.3
+go 1.22
 
 require (
 	github.com/hyperledger/fabric-chaincode-go v0.0.0-20240704073638-9fb89180dc17
